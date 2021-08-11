@@ -1,6 +1,6 @@
 FROM alpine:3.5
 # install node
-RUN apk add –no-cache nodejs tini
+RUN apk add –no-cache server.js
 # set working directory
 WORKDIR /root/chat
 # copy project file
@@ -12,8 +12,6 @@ RUN npm set progress=false && \
     npm cache clean
 # copy app files
 COPY . .
-# Set tini as entrypoint
-ENTRYPOINT [“/sbin/tini”, “--”]
 # application server port
 EXPOSE 3030
 # default run command
