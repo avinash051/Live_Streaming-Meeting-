@@ -1,10 +1,20 @@
-FROM node:12.18.4
-WORKDIR /app
-COPY ./ ./
-RUN npm install -g @angular/cli@10.1.7
-RUN npm install
-RUN npm install ng
-RUN npm install cors
-RUN ng build --prod
+FROM alpine:3.5
+# install node
+RUN apk add –no-cache nodejs tini
+# set working directory
+WORKDIR /root/chat
+# copy project file
+COPY package.json .
+# install node packages
+RUN npm set progress=false && \
+    npm config set depth 0 && \
+    npm install --only=production && \
+    npm cache clean
+# copy app files
+COPY . .
+# Set tini as entrypoint
+ENTRYPOINT [“/sbin/tini”, “--”]
+# application server port
 EXPOSE 3030
-CMD ng serve --port 3030 --host=0.0.0.0  --disableHostCheck true
+# default run command
+CMD npm run start
