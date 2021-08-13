@@ -29,7 +29,7 @@ video {
   display: block;
   flex: 1;
  object-fit: cover;
-  /* border: 5px solid #000; */
+  border: 5px solid #000;
   height: 90vh;
  min-width: 100%;
 
