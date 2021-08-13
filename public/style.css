@@ -11,19 +11,32 @@ body {
 }
 #video-grid {
   display: flex;
+  flex :1;
   justify-content: center;
   height: 100%;
-  width: 100%;
-  align-items: center;
+  width: 100% ;
+  /* align-items: center; */
   flex-wrap: wrap;
   overflow-y: auto;
+  padding-top: 0px;;
 }
+
+/* .controlsOverlay{
+  max-width: 100%;
+} */
+
 video {
   display: block;
   flex: 1;
-  object-fit: cover;
-  border: 5px solid #000;
-  max-width: 600px;
+ object-fit: cover;
+  /* border: 5px solid #000; */
+  height: 90vh;
+ min-width: 100%;
+
+  /* max-width: 120vh; */
+  margin-left: 0px !important;
+  margin-right: auto;
+  
 }
 .main {
   height: 100%;
