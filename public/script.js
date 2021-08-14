@@ -6,12 +6,17 @@ const videoGrid = document.getElementById("video-grid");
 const myVideo = document.createElement("video");
 myVideo.muted = true;
 
-var peer = new Peer(undefined, {
-  path: "/peerjs",
-  host: "live.softnetworld.in",
-  port: "3030",
+// var peer = new Peer(undefined, {
+//   path: "/peerjs",
+//   host: "live.softnetworld.in",
+//   port: "3030",
+// });
+var peer  = new Peer({
+  host: "0.peerjs.com",
+  port: 443,
+  path: "/",
+  pingInterval: 5000,
 });
-
 let myVideoStream;
 const peers = {}
 
