@@ -8,7 +8,7 @@ myVideo.muted = true;
 
 var peer = new Peer(undefined, {
   path: "/peerjs",
-  host: "https://live.softnetworld.in",
+  host: "live.softnetworld.in",
   port: "3030",
 });
 
