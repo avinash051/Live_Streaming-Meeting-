@@ -117,3 +117,79 @@ video {
 .unmute {
   color: red;
 }
+
+#chatEnter{
+  padding: 4px;
+  cursor:pointer;
+}
+
+#full-screen{
+  color: rgb(182, 181, 181); 
+  position: relative; 
+  float: right !important; 
+  margin-top: auto; 
+  padding-right: 20px; 
+  padding-bottom: 20px;
+  cursor: pointer !important;
+}
+
+#chat-attach{
+  color: rgb(182, 181, 181); 
+  padding-right: 12px ;
+  cursor: pointer;
+  
+}
+
+/* .... chat attachment pop-up design  start.......*/
+
+#myForm{
+ display: none;
+}
+
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 400px;
+  padding: 10px;
+  background-color: white;
+}
+
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+} 
+
+/* img select */
+#img-preview {
+  display: none;
+  width: 155px;
+  border: 2px dashed #333;  
+  margin-bottom: 20px;
+}
+#img-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+[type="file"] {
+  height: 0;  
+  width: 0;
+  overflow: hidden;
+}
+[type="file"] + label {
+  font-family: sans-serif;
+  background: #f44336;
+  padding: 10px 30px;
+  border: 2px solid #f44336;
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+[type="file"] + label:hover {
+  background-color: #fff;
+  color: #f44336;
+}
+/* img select end */
+/* .... chat attachment pop-up design  End.......*/

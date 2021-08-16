@@ -95,13 +95,13 @@ peer.on("call", function (call) {
 //     socket.emit("join-room", ROOM_ID, peerUserId);
 
   
-//}
+// }
 
 peer.on("open", (id) => {
   socket.emit("join-room", ROOM_ID, id);
 });
 
-// socket.emit("join-room", ROOM_ID, username);
+//socket.emit("join-room", ROOM_ID, username);
 
 // CHAT
 
@@ -180,3 +180,43 @@ const setMuteButton = () => {
   <span>Mute</span>`;
   document.getElementById("muteButton").innerHTML = html;
 };
+
+
+//chat attachment pop-up  start
+
+
+
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+} 
+
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+
+
+// img select start
+const chooseFile = document.getElementById("choose-file");
+const imgPreview = document.getElementById("img-preview");
+
+chooseFile.addEventListener("change", function () {
+  getImgData();
+});
+
+function getImgData() {
+  const files = chooseFile.files[0];
+  if (files) {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(files);
+    fileReader.addEventListener("load", function () {
+      imgPreview.style.display = "block";
+      imgPreview.innerHTML = '<img src="' + this.result + '" />';
+    });    
+  }
+}
+
+//img select end
+
+//chat attachment pop-up  end
