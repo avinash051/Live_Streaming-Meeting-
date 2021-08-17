@@ -9,6 +9,24 @@ body {
   height: 100%;
   font-family: "Roboto", sans-serif;
 }
+
+
+.main__videos {
+
+  flex-grow: 1;
+  background-color: #000;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+
+ 
+
+  
+  align-items: stretch;
+ 
+}
+
+
 #video-grid {
   display: flex;
   justify-content: center;
@@ -17,10 +35,36 @@ body {
   align-items: center;
   flex-wrap: wrap;
   overflow-y: auto;
+
 }
+
+
+
+/* Responsive layout - makes a two column-layout instead of four columns */
+@media (max-width: 800px) {
+  #video-grid {
+    flex: 50%;
+    max-width: 50%;
+    
+  }
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media (max-width: 600px) {
+  #video-grid {
+    flex: 100%;
+    max-width: 100%;
+  }
+}
+
+
+
+
+
 video {
+ 
   display: block;
-  flex: 1;
+  flex: 2;
   object-fit: cover;
   border: 5px solid #000;
   max-width: 600px;
@@ -41,13 +85,13 @@ video {
   background-color: #242324;
   border-left: 1px solid #3d3d42;
 }
-.main__videos {
-  flex-grow: 1;
-  background-color: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+
+
+
+
+
+
+
 .main__controls {
   display: flex;
   background-color: #1c1e20;

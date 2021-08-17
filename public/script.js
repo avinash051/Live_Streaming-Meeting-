@@ -220,3 +220,21 @@ function getImgData() {
 //img select end
 
 //chat attachment pop-up  end
+
+
+
+
+//fullscreen button clicked
+
+var elem = document.getElementById("video-grid");
+
+/* Function to open fullscreen mode */
+function openFullscreen() {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+    elem.msRequestFullscreen();
+  }
+}
