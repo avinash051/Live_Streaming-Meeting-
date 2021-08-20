@@ -43,9 +43,16 @@ body {
 /* Responsive layout - makes a two column-layout instead of four columns */
 @media (max-width: 800px) {
   #video-grid {
-    flex: 50%;
-    max-width: 50%;
+    flex: 100%;
+    max-width: 100%;
     
+  }
+}
+
+@media (max-width: 450px) {
+  
+video {
+   width: 400px;
   }
 }
 
@@ -55,6 +62,34 @@ body {
     flex: 100%;
     max-width: 100%;
   }
+
+  .main__videos {
+    width: 400px;
+  }
+
+  .main__controls {
+    width: 400px;
+    overflow-x: scroll;
+  }
+
+  .main__controls_button {
+    display: grid;
+    /* flex-direction: column; */
+    cursor: pointer;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    /* min-width: 6px; */
+    transition: all 0.3s ease-in-out;
+    border-radius: 5px;
+    margin: 2px;
+    font-size: small;
+  }
+
+  .main__controls_block {
+    display: grid;
+  }
+
 }
 
 
@@ -237,3 +272,26 @@ video {
 }
 /* img select end */
 /* .... chat attachment pop-up design  End.......*/
+
+
+
+
+/* chat enter css property  Start */
+#chatEnter{
+  transition-duration: 0.4s;
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  border-radius: 20px;
+}
+
+#chatEnter:hover {
+  box-shadow: 0 12px 16px 0 rgba(92, 4, 255, 0.938), 0 17px 50px 0 rgba(29, 6, 240, 0.938);
+}
+
+/* chat enter css property  End */
