@@ -262,7 +262,9 @@ function stopScreenSharing() {
   });
   screenSharing = false
 }
-
+function close(){
+  window.close()
+}
 //chat attachment pop-up  start
 
 function openForm() {
@@ -319,6 +321,4 @@ function openFullscreen() {
     elem.msRequestFullscreen();
   }
 }
-function close(){
-  window.close();
-}
+
