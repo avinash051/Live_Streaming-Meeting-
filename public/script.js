@@ -319,3 +319,6 @@ function openFullscreen() {
     elem.msRequestFullscreen();
   }
 }
+function close(){
+  window.close();
+}
