@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Live Class</title>
+<script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>   
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
   <link rel="stylesheet" href="style.css" />
   <script defer src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
@@ -42,9 +43,17 @@
             <i class="fa fa-video-camera"></i>
             <span>Pause Video</span>
           </div>
+		<div id="screenShare" class="main__controls_button" onclick="startScreenShare()">
+              <i class="fa fa-desktop"></i>
+              <span>Screen Share</span>
+            </div>
+            <div id="screenShare" class="main__controls_button" onclick="stopScreenSharing()">
+              <i class="fa fa-stop"></i>
+              <span>Screen Share Stop</span>
+            </div>
         </div>
 
-        <div class="main__controls_block">
+        <!--<div class="main__controls_block">
           <div class="main__controls_button">
             <i class="fa fa-shield"></i>
             <span>Security</span>
@@ -62,7 +71,7 @@
 
 
 
-        </div>
+        </div>-->
 
 
         <div class="main__controls_block">
