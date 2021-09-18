@@ -65,7 +65,7 @@ navigator.mediaDevices
         data.user_id = user_id;
         console.log(JSON.stringify(data))
         $.ajax({
-          url: 'http://localhost:3030/message',
+          url: 'https://live.softnetworld.in/message',
           type: 'POST',
           contentType: 'application/json',
           dataType: "json",
