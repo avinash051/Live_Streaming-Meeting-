@@ -262,6 +262,8 @@ function stopScreenSharing() {
   });
   screenSharing = false
 }
+
+
 function close(){
   window.close()
 }
