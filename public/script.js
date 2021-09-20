@@ -283,24 +283,24 @@ function closeForm() {
 
 
 // img select start
-const chooseFile = document.getElementById("choose-file");
-const imgPreview = document.getElementById("img-preview");
+// const chooseFile = document.getElementById("choose-file");
+// const imgPreview = document.getElementById("img-preview");
 
-chooseFile.addEventListener("change", function () {
-  getImgData();
-});
+// chooseFile.addEventListener("change", function () {
+//   getImgData();
+// });
 
-function getImgData() {
-  const files = chooseFile.files[0];
-  if (files) {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(files);
-    fileReader.addEventListener("load", function () {
-      imgPreview.style.display = "block";
-      imgPreview.innerHTML = '<img src="' + this.result + '" />';
-    });    
-  }
-}
+// function getImgData() {
+//   const files = chooseFile.files[0];
+//   if (files) {
+//     const fileReader = new FileReader();
+//     fileReader.readAsDataURL(files);
+//     fileReader.addEventListener("load", function () {
+//       imgPreview.style.display = "block";
+//       imgPreview.innerHTML = '<img src="' + this.result + '" />';
+//     });    
+//   }
+// }
 
 //img select end
 
@@ -324,3 +324,145 @@ function openFullscreen() {
   }
 }
 
+// ===============Upload file using chat
+$(document).ready(function() {
+  $("#btnSubmit").click(function (event) {
+
+    //stop submit the form, we will post it manually.
+    event.preventDefault();
+
+    uploadFile();
+
+  });
+});
+function uploadFile(){
+
+    // Get form
+    var form = $('#fileUploadForm')[0];
+    var data = new FormData(form);
+    data.append("CustomField", "This is some extra data, testing");
+    console.log(data);
+    $.ajax({
+        type: "POST",
+        enctype: 'multipart/form-data',
+        url: "https://backend.softnetworld.in/file/chat/upload",
+        //url: "http://localhost:8089/file/chat/upload",
+        data: data,
+        processData: false, //prevent jQuery from automatically transforming the data into a query string
+        contentType: false,
+        cache: false,
+        timeout: 600000,
+        success: function (data) {
+        	//alert(JSON.stringify(data));
+        	//var obj = JSON.stringify(data);
+          alert(data.filePath);
+          var url = new URL(window.location.href);
+          var username = url.searchParams.get("authUser");
+          var email = url.searchParams.get("email");
+          var user_id = url.searchParams.get("user_id");
+            console.log(data.filePath)
+            var data1 = {};
+            data1.msg_id = ROOM_ID;
+            data1.msg = data.filePath;
+            data1.username = username;
+            data1.email = email;
+            data1.user_id = user_id;
+            console.log(JSON.stringify(data1))
+            $.ajax({
+              url: 'https://live.softnetworld.in/message',
+              type: 'POST',
+              contentType: 'application/json',
+              dataType: "json",
+              cache: false,
+              data: JSON.stringify(data1),
+              success: function (data) {
+                //alert('Success!')
+              }
+              , error: function (jqXHR, textStatus, err) {
+                alert('text status ' + textStatus + ', err ' + err)
+              }
+            })
+            socket.emit("message", username + " : <iframe src='" + data.filePath +"'></iframe><br> <a href='" + data.filePath +"' download target=\"_blank\">download</a> ");
+            data.filePath = "";
+          
+
+        },
+        error: function (e) {
+
+        }
+    });
+
+}
+function PreviewImage() {
+  pdffile=document.getElementById("upload_file").files[0];
+  pdffile_url=URL.createObjectURL(pdffile);
+  $('#viewer').attr('src',pdffile_url);
+}
+var _validFileExtensionsFile = [".jpg",".docx",".pdf",".doc",".jpeg", ".png"];    
+function ValidateSingleInputFile(oInput) {
+    if (oInput.type == "file") {
+        var sFileName = oInput.value;
+         if (sFileName.length > 0) {
+            var blnValid = false;
+            for (var j = 0; j < _validFileExtensionsFile.length; j++) {
+                var sCurExtension = _validFileExtensionsFile[j];
+                if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+                    blnValid = true;
+                    break;
+                }
+            }
+             
+            if (!blnValid) {
+                alert("Sorry, " + sFileName + " is invalid, allowed extensions are: " + _validFileExtensionsFile.join(", "));
+                oInput.value = "";
+                return false;
+            }
+        }
+    }
+    return true;
+}
+$(document).ready(function() {
+  $('#upload_file').on('change', function(){
+    
+    var files = $(this).get(0).files;
+    
+    if (files.length > 0){
+      var formData = new FormData();
+      
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        
+        formData.append('uploaded_files', file, file.name);
+      }
+      
+      $.ajax({
+        url: '/upload',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+          alert('Files Saved');
+          console.log('Upload Successful!\n' + data);
+        },
+        error: function(jqXHR, status, error) {
+          alert('Upload Failed. Error: ' + error);
+        },
+        xhr: function() {
+          var xhr = new XMLHttpRequest();
+          
+          xhr.upload.addEventListener('progress', function(event) {
+            if (event.lengthComputable) {
+              var uploadPercentage = event.loaded / event.total;
+              $('.progress').text(parseInt(uploadPercentage * 100) + '%');
+            }
+            
+          }, false);
+          
+          return xhr;
+        }
+      });
+      
+    }
+  });
+});

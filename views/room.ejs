@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Live Class</title>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js"></script>   
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js"></script>
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
   <link rel="stylesheet" href="style.css" />
@@ -30,8 +30,10 @@
 
       </div>
 
-      <div style="text-align: center; background-color: black; display: inline-flex; padding-bottom: 20px; padding-left: 10px;">
-        <h2 style="color: rgb(240, 41, 6); font-size: 14PX;  font-weight:bolder; margin-top: 2px;">LIVE CLASS</h2> &nbsp; &nbsp;
+      <div
+        style="text-align: center; background-color: black; display: inline-flex; padding-bottom: 20px; padding-left: 10px;">
+        <h2 style="color: rgb(240, 41, 6); font-size: 14PX;  font-weight:bolder; margin-top: 2px;">LIVE CLASS</h2>
+        &nbsp; &nbsp;
         <img style="width: 20px;" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Red_circle.gif" alt="">
       </div>
 
@@ -45,14 +47,14 @@
             <i class="fa fa-video-camera"></i>
             <span>Pause Video</span>
           </div>
-		<div id="screenShare" class="main__controls_button" onclick="startScreenShare()">
-              <i class="fa fa-desktop"></i>
-              <span>Screen Share</span>
-            </div>
-            <div id="screenShare" class="main__controls_button" onclick="stopScreenSharing()">
-              <i class="fa fa-stop"></i>
-              <span>Screen Share Stop</span>
-            </div>
+          <div id="screenShare" class="main__controls_button" onclick="startScreenShare()">
+            <i class="fa fa-desktop"></i>
+            <span>Screen Share</span>
+          </div>
+          <div id="screenShare" class="main__controls_button" onclick="stopScreenSharing()">
+            <i class="fa fa-stop"></i>
+            <span>Screen Share Stop</span>
+          </div>
         </div>
 
         <!--<div class="main__controls_block">
@@ -105,12 +107,10 @@
 
 
       <!-- chat attachment pop-up start -->
-      <div class="chat-popup" id="myForm">
+      <!-- <div class="chat-popup" id="myForm">
         <form action="/action_page.php" class="form-container" style="padding-top: 20px; padding-bottom: 20px;">
           <i style="cursor: pointer; float: right;" onclick="closeForm()" class="fa fa-times-circle"
             aria-hidden="true"></i>
-
-          <!--select img start-->
           <div>
             <div id="img-preview"></div>
             <input type="file" id="choose-file" name="choose-file" accept="image/*" />
@@ -118,22 +118,39 @@
               for="choose-file">Choose File <i class="fa fa-file-image-o" aria-hidden="true"></i>
             </label>
           </div>
-          <!--select img end-->
-
-
-
-
-
         </form>
+      </div> -->
+      <!-- ============= fileupload ======================================= -->
+      <div class="chat-popup" id="myForm">
+      <div style="clear:both">
+        <iframe id="viewer" frameborder="0" scrolling="no"></iframe>
       </div>
-
+      <form method="POST" enctype="multipart/form-data" id="fileUploadForm" class="form-container" style="padding-top: 20px; padding-bottom: 20px;">
+        <i style="cursor: pointer; float: right;" onclick="closeForm()" class="fa fa-times-circle"
+            aria-hidden="true"></i>
+        <div class="modal-body">
+          <div class="custom-file">
+            <!-- <input type="file" class="choose-file" name="file" id="customFile" value=""> -->
+            <input id="upload_file" type="file" name="file" multiple="multiple">
+            <label class="custom-file-label" id="upload_file" for="upload_file">Choose file</label>            
+          </div>
+          <br>
+          <p id="result" style="color:green;"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" onclick="PreviewImage();">Preview</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmit">File Upload</button>
+        </div>
+      </form>
+    </div>
+      <!-- ============= fileupload end ======================================= -->
       <!-- chat attachment pop-up start -->
       <div class="main__message_container">
         <input type="text" id="chat_message" placeholder="Type message here.." />
 
         <span><i id="chat-attach" onclick="openForm()" class="fa fa-paperclip" aria-hidden="true"></i>
 
-          <button  id="chatEnter">Enter</button>
+          <button id="chatEnter">Enter</button>
 
         </span>
       </div>
