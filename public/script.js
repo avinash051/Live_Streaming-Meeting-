@@ -355,7 +355,7 @@ function uploadFile(){
         success: function (data) {
         	//alert(JSON.stringify(data));
         	//var obj = JSON.stringify(data);
-          alert(data.filePath);
+          //alert(data.filePath);
           var url = new URL(window.location.href);
           var username = url.searchParams.get("authUser");
           var email = url.searchParams.get("email");
