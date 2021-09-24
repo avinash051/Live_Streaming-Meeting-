@@ -22,7 +22,7 @@ var screenSharing = false
 // });
 
 const peer = new Peer(undefined, {
-  host: "/",
+  host: "https://live.softnetworld.in/",
   port: 443,
   path: "/peer",
 });
