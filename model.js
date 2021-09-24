@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const MessageTable = mongoose.Schema({
-    msg_id:{
+    msgId:{
         type : String,
         required:true,        
     },
@@ -18,10 +18,10 @@ const MessageTable = mongoose.Schema({
         type:Date,
         default : Date.now
     },
-    user_id:{
+    userId:{
         type:Number,
         required:true,
     }
 })
 
-module.exports = mongoose.model('messagetable',MessageTable)
+module.exports = mongoose.model('messages',MessageTable)

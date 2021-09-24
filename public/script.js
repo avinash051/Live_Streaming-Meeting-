@@ -4,6 +4,10 @@ const all_messages = document.getElementById("all_messages");
 const main__chat__window = document.getElementById("main__chat__window");
 const videoGrid = document.getElementById("video-grid");
 const myVideo = document.createElement("video");
+const mySSVideo = document.getElementById("ssvideo");
+const myReSSVideo = document.getElementById("ssremvideo");
+$("#ssvideo").hide();
+$("#ssremvideo").hide();
 var local_stream;
 
 myVideo.muted = true;
@@ -16,6 +20,12 @@ var peer = new Peer({
   path: "/",
   pingInterval: 5000,
 });
+
+// const peer = new Peer(undefined, {
+//   host: "/",
+//   port: 443,
+//   path: "/peer",
+// });
 
 let myVideoStream;
 const peers = {}
@@ -45,8 +55,9 @@ navigator.mediaDevices
       currentPeer = call;
     });
 
-    socket.on("user-connected", (userId) => {
-      connectToNewUser(userId, stream);
+    socket.on("user-connected", (userVId) => {
+      
+      connectToNewUser(userVId, stream);
       
     });
 
@@ -58,14 +69,15 @@ navigator.mediaDevices
       if (e.which === 13 && chatInputBox.value != "") {
         console.log(username)
         var data = {};
-        data.msg_id = ROOM_ID;
+        data.msgId = ROOM_ID;
         data.msg = chatInputBox.value;
         data.username = username;
         data.email = email;
-        data.user_id = user_id;
+        data.userId = user_id;
         console.log(JSON.stringify(data))
         $.ajax({
           url: 'https://live.softnetworld.in/message',
+         // url: 'http://localhost:3030/message',
           type: 'POST',
           contentType: 'application/json',
           dataType: "json",
@@ -85,15 +97,37 @@ navigator.mediaDevices
 
     socket.on("createMessage", (msg) => {
       console.log(msg);
+      // alert(msg);
+      // addScreenShareVideoStream(myReSSVideo, myVideoStream);
+      // if(msg=='popup'){
+      //   $("#ssvideo").show();
+      //   $("#ssremvideo").hide();
+       
+
+      // }
       let li = document.createElement("li");
       li.innerHTML = msg;
       all_messages.append(li);
       main__chat__window.scrollTop = main__chat__window.scrollHeight;
     });
+    socket.on("participantsCount", (count) => {
+      console.log(count);
+     // alert(count)
+      // alert(msg);
+      // addScreenShareVideoStream(myReSSVideo, myVideoStream);
+      // if(msg=='popup'){
+      //   $("#ssvideo").show();
+      //   $("#ssremvideo").hide();
+       
+  
+      // }
+      const html = count;
+    document.getElementById("countParticipants").innerHTML = html;
+    });
   });
-
-socket.on('user-disconnected', userId => {
-  if (peers[userId]) peers[userId].close()
+  
+socket.on('user-disconnected', userVId => {
+  if (peers[userVId]) peers[userVId].close()
 })
 
 peer.on("call", function (call) {
@@ -129,6 +163,18 @@ peer.on("call", function (call) {
 //}
 
 peer.on("open", (id) => {
+  console.log(id);
+  // const localId = window.sessionStorage.getItem("id"); 
+  // console.log("localId : "+localId);
+  // if(localId === null){
+  //   window.sessionStorage.setItem("id", id);
+  // }else{
+  //  id = localId
+  // }
+  // console.log(id);
+  // Store
+
+// Retrieve
 
   socket.emit("join-room", ROOM_ID, id);
 });
@@ -136,9 +182,9 @@ peer.on("open", (id) => {
 // socket.emit("join-room", ROOM_ID, username);
 
 // CHAT
-
-const connectToNewUser = (userId, streams) => {
-  var call = peer.call(userId, streams);
+const userCount = [];
+const connectToNewUser = (userVId, streams) => {
+  var call = peer.call(userVId, streams);
   console.log(call);
   var video = document.createElement("video");
   call.on("stream", (userVideoStream) => {
@@ -150,7 +196,12 @@ const connectToNewUser = (userId, streams) => {
     video.remove()
   })
   currentPeer = call;
-  peers[userId] = call
+  peers[userVId] = call
+  // const html = Object.keys(peers).length + 1;
+  //const cc= document.getElementById("countParticipants");
+  //alert(Object.keys(peers).length + 1);
+  socket.emit("participants",Object.keys(peers).length + 1);
+ // cc.value = ""
 };
 
 const addVideoStream = (videoEl, stream) => {
@@ -169,7 +220,26 @@ const addVideoStream = (videoEl, stream) => {
     }
   }
 };
+const addScreenShareVideoStream = (videoEl, stream) => {
+  $("#ssvideo").show();
+  $("#video-grid").hide();
+  $("#screenShareStop").show();
+  $("#screenShare").hide();
+  // socket.emit("message", "popup");
+  videoEl.srcObject = stream;
+  videoEl.addEventListener("loadedmetadata", () => {
+    videoEl.play();
+  });
 
+  mySSVideo.append(videoEl);
+  // let totalUsers = document.getElementsById("ssvideo").length;
+  // if (totalUsers > 1) {
+  //   for (let index = 0; index < totalUsers; index++) {
+  //     document.getElementsById("ssvideo")[index].style.width =
+  //       100 / totalUsers + "%";
+  //   }
+  // }
+};
 const playStop = () => {
   let enabled = myVideoStream.getVideoTracks()[0].enabled;
   if (enabled) {
@@ -214,27 +284,52 @@ const setMuteButton = () => {
   <span>Mute</span>`;
   document.getElementById("muteButton").innerHTML = html;
 };
-
+const setScreenShareButton = () => {
+  const html = `<span class="material-icons">
+  stop_screen_share
+  </span>
+  <span class="unmute">Stop</span>`;
+  document.getElementById("screenShare").innerHTML = html;
+};
+const setCloseScreenShareButton = () => {
+  const html = `<span class="material-icons" style="font-size:32px;">
+  present_to_all
+  </span>
+<span>Screen Share</span>`;
+  document.getElementById("screenShare").innerHTML = html;
+};
+$("#screenShareStop").hide();
 function startScreenShare() {
+
   if (screenSharing) {
     stopScreenSharing()
   }
   navigator.mediaDevices.getDisplayMedia({ video: true }).then((stream) => {
     screenStream = stream;
-    let videoTrack = screenStream.getVideoTracks()[0];
-    videoTrack.onended = () => {
-      stopScreenSharing()
+    try{
+      let videoTrack = screenStream.getVideoTracks()[0];
+      // 
+       videoTrack.onended = () => {
+         stopScreenSharing()
+       }
+       if (peer) {
+         let sender = currentPeer.peerConnection.getSenders().find(function (s) {
+           return s.track.kind == videoTrack.kind;
+         })
+         sender.replaceTrack(videoTrack)
+         //addVideoStream(videoTrack, screenStream);
+         screenSharing = true
+       }
+       console.log(screenStream)
+    }catch(error){
+
     }
-    if (peer) {
-      let sender = currentPeer.peerConnection.getSenders().find(function (s) {
-        return s.track.kind == videoTrack.kind;
-      })
-      sender.replaceTrack(videoTrack)
-      screenSharing = true
-    }
-    console.log(screenStream)
+   
+    addScreenShareVideoStream(mySSVideo, stream);
   })
 }
+
+
 function setLocalStream(stream) {
 
   let video = document.getElementById("local-video");
@@ -244,11 +339,15 @@ function setLocalStream(stream) {
 }
 function setRemoteStream(stream) {
 
-  let video = document.getElementById("remote-video");
+  let video = document.getElementById("ssremvideo");
   video.srcObject = stream;
   video.play();
 }
 function stopScreenSharing() {
+  $("#ssvideo").hide();
+  $("#video-grid").show();
+  $("#screenShareStop").hide();
+  $("#screenShare").show();
   if (!screenSharing) return;
   let videoTrack = myVideoStream.getVideoTracks()[0];
   if (peer) {
@@ -264,8 +363,17 @@ function stopScreenSharing() {
 }
 
 
-function close(){
-  window.close()
+function closeClass(){
+  if (confirm("Close Class Room?")) {
+    
+    setStopVideo();
+    setMuteButton();
+    stopScreenSharing();
+    socket.on('user-disconnected', userVId => {
+      if (peers[userVId]) peers[userVId].close()
+    })
+    location.replace("/thankyou")
+  }
 }
 //chat attachment pop-up  start
 
@@ -362,14 +470,15 @@ function uploadFile(){
           var user_id = url.searchParams.get("user_id");
             console.log(data.filePath)
             var data1 = {};
-            data1.msg_id = ROOM_ID;
+            data1.msgId = ROOM_ID;
             data1.msg = data.filePath;
             data1.username = username;
             data1.email = email;
-            data1.user_id = user_id;
+            data1.userId = user_id;
             console.log(JSON.stringify(data1))
             $.ajax({
               url: 'https://live.softnetworld.in/message',
+             // url: 'http://localhost:3030/message',              
               type: 'POST',
               contentType: 'application/json',
               dataType: "json",
@@ -421,48 +530,3 @@ function ValidateSingleInputFile(oInput) {
     }
     return true;
 }
-$(document).ready(function() {
-  $('#upload_file').on('change', function(){
-    
-    var files = $(this).get(0).files;
-    
-    if (files.length > 0){
-      var formData = new FormData();
-      
-      for (var i = 0; i < files.length; i++) {
-        var file = files[i];
-        
-        formData.append('uploaded_files', file, file.name);
-      }
-      
-      $.ajax({
-        url: '/upload',
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(data) {
-          alert('Files Saved');
-          console.log('Upload Successful!\n' + data);
-        },
-        error: function(jqXHR, status, error) {
-          alert('Upload Failed. Error: ' + error);
-        },
-        xhr: function() {
-          var xhr = new XMLHttpRequest();
-          
-          xhr.upload.addEventListener('progress', function(event) {
-            if (event.lengthComputable) {
-              var uploadPercentage = event.loaded / event.total;
-              $('.progress').text(parseInt(uploadPercentage * 100) + '%');
-            }
-            
-          }, false);
-          
-          return xhr;
-        }
-      });
-      
-    }
-  });
-});

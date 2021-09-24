@@ -295,3 +295,19 @@ video {
 }
 
 /* chat enter css property  End */
+
+#ssvideo{
+  /* top: 0;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    background-color: lightgray;
+    position: absolute; */
+    color: rgb(182, 181, 181); 
+  position: relative; 
+  float: right !important; 
+  margin-top: auto; 
+  /* padding-right: 20px; 
+  padding-bottom: 20px; */
+  cursor: pointer !important;
+}

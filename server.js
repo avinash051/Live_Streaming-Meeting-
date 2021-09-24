@@ -34,19 +34,21 @@ mongoose.connection.once('open',function(){
 });
 app.use(express.json());
 app.post('/message', async (req,res)=>{
- // console.log(req.body);
-  const {msg_id,msg,username,email,user_id} = req.body; 
+  console.log(req.body);
+  const {msgId,msg,username,email,userId} = req.body; 
   try{
 
-    const newData = new MessageTable({msg_id,msg,username,email,user_id})
+    const newData = new MessageTable({msgId,msg,username,email,userId})
     await newData.save();
     return res.json(await MessageTable.find())
    }catch(err){
       console.log(err.message);  
    }
 })
+
 // ================ clear
 const { ExpressPeerServer } = require("peer");
+const { nextTick } = require("process");
 const peerServer = ExpressPeerServer(server, {
   debug: true,
 });
@@ -60,8 +62,18 @@ app.get("/", (req, rsp) => {
 });
 
 app.get("/:room", (req, res) => {
-  res.render("room", { roomId: req.params.room });
+  const roomId2= req.params.room
+  if(roomId2 === "thankyou"){
+    //res.render("thankyou");
+    res.render('thankyou');
+  }else{
+    res.render("room", { roomId: req.params.room });
+  }
+ 
 });
+// app.get("/thankyou", (req, res) => {
+//  res.render("thankyou");
+// });
 //  var url = new URL(window.location.href);
 //  var username = url.searchParams.get("authUser");
 //  console.log(username)
@@ -73,11 +85,14 @@ io.on("connection", (socket) => {
     socket.on("message", (message) => {
       io.to(roomId).emit("createMessage",  message);
     });
+   
      // disconnected
       socket.on('disconnect', () => {
         socket.to(roomId).emit('user-disconnected',userId)
-    })
-    
+    });
+    socket.on("participants", (count) => {
+      io.to(roomId).emit("participantsCount",  count);
+    });
   });
  
 });
