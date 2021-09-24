@@ -7,11 +7,10 @@
   <title>Live Class</title>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js"></script>
-
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
   <link rel="stylesheet" href="style.css" />
   <script defer src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
-  <!-- <script defer src="peerjs.min.js"></script> -->
   <script defer src="peerjs.min.js.map"></script>
   <script src="/socket.io/socket.io.js" defer></script>
   <script>
@@ -24,9 +23,14 @@
 
     <div class="main__left">
 
+      <!-- Remote Video Element-->
+     
 
+      <!-- Local Video Element-->
+      <!-- <video id="local-video"></video> -->
       <div class="main__videos ">
-
+        <video class="main__videos " id="ssvideo"></video>
+        <video class="main__videos " id="ssremvideo"></video>
         <div id="video-grid"></div>
 
       </div>
@@ -49,13 +53,23 @@
             <span>Pause Video</span>
           </div>
           <div id="screenShare" class="main__controls_button" onclick="startScreenShare()">
-            <i class="fa fa-desktop"></i>
+            <!-- <i class="fa fa-desktop"></i> -->
+            <span class="material-icons" style="font-size:32px;">
+              present_to_all
+              </span>
             <span>Screen Share</span>
           </div>
-          <div id="screenShare" class="main__controls_button" onclick="stopScreenSharing()">
+          <div id="screenShareStop" class="main__controls_button" onclick="stopScreenSharing()" style=" color: #f44336;">
+            <!-- <i class="fa fa-desktop"></i> -->
+            <span class="material-icons" style="font-size:32px;">
+              stop_screen_share
+              </span>
+            <span>Screen Share</span>
+          </div>
+          <!-- <div id="screenShare" class="main__controls_button" onclick="stopScreenSharing()">
             <i class="fa fa-stop"></i>
             <span>Screen Share Stop</span>
-          </div>
+          </div> -->
         </div>
 
         <!--<div class="main__controls_block">
@@ -77,8 +91,17 @@
 
 
         </div>-->
-
-
+        
+          <div class="main__controls_block">
+            <div class="main__controls_button">
+              <span class="material-icons">
+                groups
+                </span>
+              <span>Participants</span>
+              <p id="countParticipants" style="color: #fff;"></p>
+            </div>
+  
+          </div>
         <div class="main__controls_block">
           <div onclick="openFullscreen();" class="main__controls_button">
             <i class="fa fa-2x fa-arrows-alt " aria-hidden="true"></i>
@@ -89,7 +112,7 @@
 
 
         <div class="main__controls_block">
-          <div class="main__controls_button leaveMeeting" id="leave-meeting" onclick="close()">
+          <div class="main__controls_button leaveMeeting" id="leave-meeting" onclick="javascript:closeClass();">
             <i class="fa fa-times"></i>
             <span class="">Leave Meeting</span>
           </div>
