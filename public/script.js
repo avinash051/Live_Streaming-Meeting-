@@ -14,18 +14,18 @@ myVideo.muted = true;
 var currentPeer = null
 var screenStream;
 var screenSharing = false
-// var peer = new Peer({
-//   host: "0.peerjs.com",
-//   port: 443,
-//   path: "/",
-//   pingInterval: 5000,
-// });
-
-const peer = new Peer(undefined, {
-  host: "https://live.softnetworld.in/",
+var peer = new Peer({
+  host: "0.peerjs.com",
   port: 443,
-  path: "/peer",
+  path: "/",
+  pingInterval: 5000,
 });
+
+// const peer = new Peer(undefined, {
+//   host: "https://live.softnetworld.in/",
+//   port: 443,
+//   path: "/peer",
+// });
 
 let myVideoStream;
 const peers = {}
