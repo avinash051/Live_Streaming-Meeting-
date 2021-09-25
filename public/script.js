@@ -60,7 +60,41 @@ navigator.mediaDevices
       connectToNewUser(userVId, stream);
       
     });
-
+    $(document).ready(function() {
+      $("#chatEnter").click(function(){
+          var url = new URL(window.location.href);
+      var username = url.searchParams.get("authUser");
+      var email = url.searchParams.get("email");
+      var user_id = url.searchParams.get("user_id");
+      if (chatInputBox.value != "") {
+        console.log(username)
+        var data = {};
+        data.msgId = ROOM_ID;
+        data.msg = chatInputBox.value;
+        data.username = username;
+        data.email = email;
+        data.userId = user_id;
+        console.log(JSON.stringify(data))
+        $.ajax({
+          url: 'https://live.softnetworld.in/message',
+         // url: 'http://localhost:3030/message',
+          type: 'POST',
+          contentType: 'application/json',
+          dataType: "json",
+          cache: false,
+          data: JSON.stringify(data),
+          success: function (data) {
+            //alert('Success!')
+          }
+          , error: function (jqXHR, textStatus, err) {
+            alert('text status ' + textStatus + ', err ' + err)
+          }
+        })
+        socket.emit("message", username + " : " + chatInputBox.value);
+        chatInputBox.value = "";
+      }
+      }); 
+  });
     document.addEventListener("keydown", (e) => {
       var url = new URL(window.location.href);
       var username = url.searchParams.get("authUser");
@@ -112,15 +146,6 @@ navigator.mediaDevices
     });
     socket.on("participantsCount", (count) => {
       console.log(count);
-     // alert(count)
-      // alert(msg);
-      // addScreenShareVideoStream(myReSSVideo, myVideoStream);
-      // if(msg=='popup'){
-      //   $("#ssvideo").show();
-      //   $("#ssremvideo").hide();
-       
-  
-      // }
       const html = count;
     document.getElementById("countParticipants").innerHTML = html;
     });
@@ -175,11 +200,10 @@ peer.on("open", (id) => {
   // Store
 
 // Retrieve
-
   socket.emit("join-room", ROOM_ID, id);
 });
 
-// socket.emit("join-room", ROOM_ID, username);
+
 
 // CHAT
 const userCount = [];
@@ -298,6 +322,20 @@ const setCloseScreenShareButton = () => {
 <span>Screen Share</span>`;
   document.getElementById("screenShare").innerHTML = html;
 };
+
+function closeClass(){
+  if (confirm("Close Class Room?")) {
+    
+    setStopVideo();
+    setMuteButton();
+    stopScreenSharing();
+    socket.on('user-disconnected', userVId => {
+      if (peers[userVId]) peers[userVId].close()
+    })
+    location.replace("/thankyou")
+  }
+};
+
 $("#screenShareStop").hide();
 function startScreenShare() {
 
@@ -363,18 +401,7 @@ function stopScreenSharing() {
 }
 
 
-function closeClass(){
-  if (confirm("Close Class Room?")) {
-    
-    setStopVideo();
-    setMuteButton();
-    stopScreenSharing();
-    socket.on('user-disconnected', userVId => {
-      if (peers[userVId]) peers[userVId].close()
-    })
-    location.replace("/thankyou")
-  }
-}
+
 //chat attachment pop-up  start
 
 function openForm() {
