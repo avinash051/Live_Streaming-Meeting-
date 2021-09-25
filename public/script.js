@@ -544,7 +544,7 @@ function uploadFile(){
               cache: false,
               data: JSON.stringify(data1),
               success: function (data) {
-                //alert('Success!')
+                alert('Success!')
               }
               , error: function (jqXHR, textStatus, err) {
                 alert('text status ' + textStatus + ', err ' + err)
