@@ -166,11 +166,20 @@ navigator.mediaDevices
         var obj =data;
 
         for (var i = 0; i < obj.length; i++) {
+          if(obj[i].msg.includes("https://cp-docs-livechat.s3.us-east-2.amazonaws.com/")){
+            let li = document.createElement("li");
+            li.innerHTML = obj[i].username +" : "+" <iframe src='" + obj[i].msg +"'></iframe><br> <a href='" + obj[i].msg +"' download target=\"_blank\">download</a> ";
+            all_messages.append(li);
+            main__chat__window.scrollTop = main__chat__window.scrollHeight;  
+          
+          }else{
+            let li = document.createElement("li");
+            li.innerHTML = obj[i].username +" : "+obj[i].msg;
+            all_messages.append(li);
+            main__chat__window.scrollTop = main__chat__window.scrollHeight;
+          }
           //alert(obj[i].username +" : "+obj[i].msg);
-          let li = document.createElement("li");
-          li.innerHTML = obj[i].username +" : "+obj[i].msg;
-          all_messages.append(li);
-          main__chat__window.scrollTop = main__chat__window.scrollHeight;
+         
             // console.log("PAIR " + i + ": " + obj[i].oid);
             // console.log("PAIR " + i + ": " + obj[i].cid);
         }
