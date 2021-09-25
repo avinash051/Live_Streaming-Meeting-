@@ -61,6 +61,7 @@ navigator.mediaDevices
       
     });
     $(document).ready(function() {
+      getMsg();
       $("#chatEnter").click(function(){
           var url = new URL(window.location.href);
       var username = url.searchParams.get("authUser");
@@ -150,7 +151,38 @@ navigator.mediaDevices
     document.getElementById("countParticipants").innerHTML = html;
     });
   });
-  
+
+  function getMsg(){
+    var dataMSG = {};
+    dataMSG.msgId = ROOM_ID;
+    $.ajax({
+      url: 'https://backend.softnetworld.in/api/message/fetch/msgbyid',
+      type: 'POST',
+      contentType: 'application/json',
+      dataType: "json",
+      cache: false,
+      data: JSON.stringify(dataMSG),
+      success: function (data) {
+        var obj =data;
+
+        for (var i = 0; i < obj.length; i++) {
+          //alert(obj[i].username +" : "+obj[i].msg);
+          let li = document.createElement("li");
+          li.innerHTML = obj[i].username +" : "+obj[i].msg;
+          all_messages.append(li);
+          main__chat__window.scrollTop = main__chat__window.scrollHeight;
+            // console.log("PAIR " + i + ": " + obj[i].oid);
+            // console.log("PAIR " + i + ": " + obj[i].cid);
+        }
+        
+        //alert(JSON.stringify(data));
+      }
+      , error: function (jqXHR, textStatus, err) {
+        alert('text status ' + textStatus + ', err ' + err)
+      }
+    }) 
+  }
+
 socket.on('user-disconnected', userVId => {
   if (peers[userVId]) peers[userVId].close()
 })

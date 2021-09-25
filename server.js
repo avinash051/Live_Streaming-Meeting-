@@ -24,8 +24,8 @@ const MessageTable = require('./model');
 
 const mongoose = require('mongoose');
 
-//mongoose.connect('mongodb://localhost:27017/dev_db');
-mongoose.connect('mongodb+srv://vishwam:Yav8Ryso437gRNWA@cp0.5lbqr.mongodb.net/dev_db');
+mongoose.connect('mongodb://localhost:27017/dev_db');
+//mongoose.connect('mongodb+srv://vishwam:Yav8Ryso437gRNWA@cp0.5lbqr.mongodb.net/dev_db');
 
 mongoose.connection.once('open',function(){
     console.log('connection has been made...');
